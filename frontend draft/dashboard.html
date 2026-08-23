@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>	Frontend Draft </title>
+</head>
+<body>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>clothSET — Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;0,9..144,900;1,9..144,500&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --black:#0d0d0d;
+    --white:#ffffff;
+    --paper:#f4f4f2;
+    --gray-300:#d8d8d4;
+    --gray-600:#7a7a76;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    background:var(--white);
+    color:var(--black);
+    font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;text-decoration:none;}
+  button{font-family:inherit;cursor:pointer;background:none;border:none;}
+
+  .wrap{max-width:1240px;margin:0 auto;padding:0 40px;}
+
+  /* ---------- NAV ---------- */
+  header{
+    position:sticky;top:0;z-index:100;
+    background:var(--white);
+    border-bottom:1px solid var(--black);
+  }
+  nav{
+    display:grid;
+    grid-template-columns:1fr auto 1fr;
+    align-items:center;
+    padding:22px 40px;
+    max-width:1240px;margin:0 auto;
+  }
+  nav .logo{justify-self:start;}
+  nav .nav-links{justify-self:center;}
+  nav .nav-user{justify-self:end;}
+  .logo{
+    font-family:'Fraunces',serif;
+    font-weight:900;
+    font-size:22px;
+    letter-spacing:0.02em;
+  }
+  .logo span{font-style:italic;font-weight:500;}
+  .nav-links{
+    display:flex;align-items:center;gap:44px;
+    list-style:none;
+  }
+  .nav-links a{
+    font-size:13px;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    position:relative;
+    padding-bottom:4px;
+  }
+  .nav-links a.active::after,
+  .nav-links a:hover::after{width:100%;}
+  .nav-links a::after{
+    content:"";
+    position:absolute;left:0;bottom:0;
+    width:0%;height:1px;
+    background:var(--black);
+    transition:width .25s ease;
+  }
+  .nav-links a.active{color:var(--black);}
+  .avatar{
+    width:34px;height:34px;
+    border:1px solid var(--black);
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Space Mono',monospace;
+    font-size:12px;
+    justify-self:end;
+  }
+
+  /* ---------- WELCOME ---------- */
+  .welcome{
+    padding:64px 40px 0;
+    max-width:1240px;margin:0 auto;
+  }
+  .eyebrow{
+    font-family:'Space Mono',monospace;
+    font-size:12px;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    color:var(--gray-600);
+    display:flex;align-items:center;gap:10px;
+    margin-bottom:14px;
+  }
+  .eyebrow::before{
+    content:"";width:26px;height:1px;background:var(--black);display:inline-block;
+  }
+  .welcome h1{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:clamp(32px,4vw,48px);
+    letter-spacing:-0.01em;
+  }
+
+  /* ---------- STATS ---------- */
+  .stats{
+    margin-top:48px;
+    display:grid;
+    grid-template-columns:repeat(3,1fr) auto;
+    gap:1px;
+    background:var(--gray-300);
+    border:1px solid var(--black);
+  }
+  .stat{
+    background:var(--white);
+    padding:30px 32px;
+  }
+  .stat .label{
+    font-family:'Space Mono',monospace;
+    font-size:11px;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    color:var(--gray-600);
+  }
+  .stat .num{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:38px;
+    margin-top:10px;
+    display:block;
+  }
+  .stat-actions{
+    background:var(--black);
+    display:flex;flex-direction:column;
+  }
+  .stat-actions .btn-link{
+    flex:1;
+    display:flex;align-items:center;justify-content:space-between;
+    gap:24px;
+    padding:0 28px;
+    color:var(--white);
+    font-size:12px;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    border-bottom:1px solid #2a2a2a;
+    transition:background .2s ease;
+    white-space:nowrap;
+  }
+  .stat-actions .btn-link:last-child{border-bottom:none;}
+  .stat-actions .btn-link:hover{background:#1c1c1c;}
+  .stat-actions .btn-link span.arrow{font-family:'Space Mono',monospace;}
+
+  /* ---------- CLOSET ---------- */
+  .closet-section{
+    padding:90px 40px 120px;
+    max-width:1240px;margin:0 auto;
+  }
+  .section-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    border-bottom:1px solid var(--black);
+    padding-bottom:24px;
+    margin-bottom:40px;
+  }
+  .section-head h2{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:clamp(28px,3.4vw,38px);
+  }
+  .add-btn{
+    display:flex;align-items:center;gap:10px;
+    padding:12px 22px;
+    border:1px solid var(--black);
+    font-size:13px;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    transition:background .2s ease,color .2s ease;
+  }
+  .add-btn:hover{background:var(--black);color:var(--white);}
+  .add-btn .plus{font-family:'Space Mono',monospace;font-size:15px;}
+
+  .closet-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:1px;
+    background:var(--gray-300);
+    border:1px solid var(--black);
+  }
+  .item-card{
+    background:var(--white);
+    display:flex;flex-direction:column;
+  }
+  .item-thumb{
+    aspect-ratio:1;
+    background:var(--paper);
+    display:flex;align-items:center;justify-content:center;
+    position:relative;
+    border-bottom:1px solid var(--black);
+  }
+  .item-thumb svg{width:34%;height:34%;stroke:var(--gray-600);fill:none;stroke-width:1.2;}
+  .wear-tag{
+    position:absolute;top:12px;left:12px;
+    font-family:'Space Mono',monospace;
+    font-size:10px;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    color:var(--gray-600);
+    background:var(--white);
+    border:1px solid var(--gray-300);
+    padding:3px 8px;
+  }
+  .item-body{
+    padding:20px 22px 22px;
+    flex:1;
+    display:flex;flex-direction:column;
+  }
+  .item-name{
+    font-family:'Fraunces',serif;
+    font-weight:500;
+    font-size:18px;
+  }
+  .item-cat{
+    font-family:'Space Mono',monospace;
+    font-size:11px;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--gray-600);
+    margin-top:6px;
+  }
+  .item-price{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:20px;
+    margin-top:16px;
+  }
+  .item-actions{
+    margin-top:18px;
+    display:flex;
+    border-top:1px solid var(--gray-300);
+    padding-top:14px;
+    gap:0;
+  }
+  .item-actions button{
+    font-size:11px;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--gray-600);
+    padding:4px 14px 4px 0;
+    transition:color .15s ease;
+  }
+  .item-actions button:first-child{border-right:1px solid var(--gray-300);padding-left:0;}
+  .item-actions button:last-child{padding-left:14px;}
+  .item-actions button:hover{color:var(--black);}
+  .item-actions button.delete:hover{color:#b3392c;}
+
+  .empty-slot{
+    background:var(--white);
+    display:flex;align-items:center;justify-content:center;
+    min-height:100%;
+  }
+  .empty-slot a{
+    display:flex;flex-direction:column;align-items:center;gap:10px;
+    color:var(--gray-600);
+    font-family:'Space Mono',monospace;
+    font-size:11px;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    padding:40px;
+    text-align:center;
+  }
+  .empty-slot a .plus{font-family:'Fraunces',serif;font-size:28px;color:var(--black);}
+  .empty-slot a:hover{color:var(--black);}
+
+  @media (max-width:1024px){
+    .closet-grid{grid-template-columns:repeat(2,1fr);}
+    .stats{grid-template-columns:1fr 1fr;}
+    .stat-actions{grid-column:1 / -1;flex-direction:row;}
+  }
+  @media (max-width:760px){
+    .nav-links{display:none;}
+    nav,.welcome,.closet-section{padding-left:22px;padding-right:22px;}
+    .closet-grid{grid-template-columns:1fr;}
+    .stats{grid-template-columns:1fr 1fr;}
+    .section-head{flex-direction:column;align-items:flex-start;gap:16px;}
+  }
+
+  :focus-visible{outline:2px solid var(--black);outline-offset:3px;}
+</style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a href="#" class="logo">cloth<span>SET</span></a>
+    <ul class="nav-links">
+      <li><a href="#" class="active">Dashboard</a></li>
+      <li><a href="#">Closet</a></li>
+      <!-- <li><a href="#">Outfits</a></li> -->
+      <li><a href="#">Analytics</a></li>
+    </ul>
+    <div class="avatar">JD</div>
+  </nav>
+</header>
+
+<section class="welcome">
+  <div class="eyebrow">Dashboard</div>
+  <h1>Welcome back 👋</h1>
+
+  <div class="stats">
+    <div class="stat">
+      <span class="label">Your wardrobe</span>
+      <span class="num">41 items</span>
+    </div>
+    <div class="stat">
+      <span class="label">You've spent</span>
+      <span class="num">₱24,580</span>
+    </div>
+    <div class="stat">
+      <span class="label">Average item</span>
+      <span class="num">₱599</span>
+    </div>
+    <div class="stat-actions">
+      <a href="#" class="btn-link">View Analytics <span class="arrow">→</span></a>
+      <a href="#" class="btn-link">View Closet <span class="arrow">→</span></a>
+    </div>
+  </div>
+</section>
+
+<section class="closet-section">
+  <div class="section-head">
+    <h2>My Closet</h2>
+    <button class="add-btn"><span class="plus">+</span> Add Clothing</button>
+  </div>
+
+  <div class="closet-grid">
+    <div class="item-card">
+      <div class="item-thumb">
+        <span class="wear-tag">Worn 12×</span>
+        <svg viewBox="0 0 24 24"><path d="M8 3 L16 3 L16 10 L20 21 L14 21 L12 14 L10 21 L4 21 L8 10 Z"/></svg>
+      </div>
+      <div class="item-body">
+        <div>
+          <div class="item-name">Black T-Shirt</div>
+          <div class="item-cat">Tops</div>
+        </div>
+        <div class="item-price">₱799</div>
+        <div class="item-actions">
+          <button>Edit</button>
+          <button class="delete">Delete</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="item-card">
+      <div class="item-thumb">
+        <span class="wear-tag">Worn 7×</span>
+        <svg viewBox="0 0 24 24"><path d="M7 3 L17 3 L18 21 L13 21 L12 12 L11 21 L6 21 Z"/></svg>
+      </div>
+      <div class="item-body">
+        <div>
+          <div class="item-name">Straight Denim</div>
+          <div class="item-cat">Bottoms</div>
+        </div>
+        <div class="item-price">₱1,890</div>
+        <div class="item-actions">
+          <button>Edit</button>
+          <button class="delete">Delete</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="item-card">
+      <div class="item-thumb">
+        <span class="wear-tag">Worn 3×</span>
+        <svg viewBox="0 0 24 24"><path d="M6 4 L9 2 L12 4 L15 2 L18 4 L18 8 L15 6 L15 20 L9 20 L9 6 L6 8 Z"/></svg>
+      </div>
+      <div class="item-body">
+        <div>
+          <div class="item-name">Wool Overcoat</div>
+          <div class="item-cat">Outerwear</div>
+        </div>
+        <div class="item-price">₱4,250</div>
+        <div class="item-actions">
+          <button>Edit</button>
+          <button class="delete">Delete</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="item-card">
+      <div class="item-thumb">
+        <span class="wear-tag">Worn 20×</span>
+        <svg viewBox="0 0 24 24"><path d="M12 3 L4 8 L4 20 L20 20 L20 8 Z"/></svg>
+      </div>
+      <div class="item-body">
+        <div>
+          <div class="item-name">Canvas Sneakers</div>
+          <div class="item-cat">Shoes</div>
+        </div>
+        <div class="item-price">₱2,100</div>
+        <div class="item-actions">
+          <button>Edit</button>
+          <button class="delete">Delete</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="item-card">
+      <div class="item-thumb">
+        <span class="wear-tag">Worn 5×</span>
+        <svg viewBox="0 0 24 24"><path d="M9 3 L15 3 L17 8 L14 8 L18 21 L6 21 L10 8 L7 8 Z"/></svg>
+      </div>
+      <div class="item-body">
+        <div>
+          <div class="item-name">Linen Wrap Dress</div>
+          <div class="item-cat">Dresses</div>
+        </div>
+        <div class="item-price">₱1,450</div>
+        <div class="item-actions">
+          <button>Edit</button>
+          <button class="delete">Delete</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="item-card">
+      <div class="item-thumb">
+        <span class="wear-tag">Worn 9×</span>
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/></svg>
+      </div>
+      <div class="item-body">
+        <div>
+          <div class="item-name">Leather Belt</div>
+          <div class="item-cat">Accessories</div>
+        </div>
+        <div class="item-price">₱650</div>
+        <div class="item-actions">
+          <button>Edit</button>
+          <button class="delete">Delete</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="item-card">
+      <div class="item-thumb">
+        <span class="wear-tag">Worn 15×</span>
+        <svg viewBox="0 0 24 24"><path d="M12 3 L9 6 L9 21 L15 21 L15 6 Z M9 9 L15 9"/></svg>
+      </div>
+      <div class="item-body">
+        <div>
+          <div class="item-name">Running Tights</div>
+          <div class="item-cat">Activewear</div>
+        </div>
+        <div class="item-price">₱980</div>
+        <div class="item-actions">
+          <button>Edit</button>
+          <button class="delete">Delete</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="item-card empty-slot">
+      <a href="#">
+        <span class="plus">+</span>
+        Add another piece
+      </a>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>
+</body>
+</html>
