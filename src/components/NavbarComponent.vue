@@ -1,4 +1,4 @@
-<template>
+-<template>
     <nav>
         <div>
             <router-link class="logo">
@@ -58,3 +58,22 @@
         <div class="avatar">KV</div>
     </nav>
 </template>
+
+<!-- <script>
+import { ref, onMounted, onUnmounted } from "vue";
+import { useRouter } from "vue-router";
+import { useUserStore } from "../stores/user"
+
+const router = useRouter();
+const userStore = useUserStore();
+
+const handleLogout = () => {
+    useStore.clearUser();
+    router.push({ name: "Login" });
+};
+
+const isHidden = ref(false);
+const HIDE_DELAY = 100;
+
+
+</script> -->

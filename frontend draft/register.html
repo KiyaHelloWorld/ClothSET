@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>clothSET — Create Account</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;0,9..144,900;1,9..144,500&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --black:#0d0d0d;
+    --white:#ffffff;
+    --paper:#f4f4f2;
+    --gray-300:#d8d8d4;
+    --gray-600:#7a7a76;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{height:100%;}
+  body{
+    background:var(--white);
+    color:var(--black);
+    font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;text-decoration:none;}
+  button,input{font-family:inherit;}
+  button{cursor:pointer;background:none;border:none;}
+
+  .screen{
+    display:grid;
+    grid-template-columns:1.05fr 1fr;
+    min-height:100vh;
+  }
+
+  /* ---------- LEFT: BRAND PANEL ---------- */
+  .brand-panel{
+    background:var(--black);
+    color:var(--white);
+    padding:44px 56px;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    position:relative;
+    overflow:hidden;
+  }
+  .brand-panel .logo{
+    font-family:'Fraunces',serif;
+    font-weight:900;
+    font-size:22px;
+    letter-spacing:0.02em;
+  }
+  .brand-panel .logo span{font-style:italic;font-weight:500;}
+
+  .brand-copy{
+    max-width:420px;
+  }
+  .brand-copy .eyebrow{
+    font-family:'Space Mono',monospace;
+    font-size:12px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--gray-300);
+    display:flex;align-items:center;gap:10px;
+    margin-bottom:22px;
+  }
+  .brand-copy .eyebrow::before{content:"";width:26px;height:1px;background:var(--white);display:inline-block;}
+  .brand-copy h1{
+    font-family:'Fraunces',serif;
+    font-weight:500;
+    font-size:clamp(30px,3.4vw,42px);
+    line-height:1.15;
+    letter-spacing:-0.01em;
+  }
+  .brand-copy p{
+    margin-top:20px;
+    font-size:15px;
+    line-height:1.7;
+    color:var(--gray-300);
+    max-width:360px;
+  }
+
+  .steps{
+    border-top:1px solid rgba(255,255,255,0.18);
+    padding-top:24px;
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+  }
+  .steps .step{
+    display:flex;
+    align-items:baseline;
+    gap:14px;
+  }
+  .steps .step .n{
+    font-family:'Space Mono',monospace;
+    font-size:11px;
+    color:var(--gray-600);
+    width:16px;
+  }
+  .steps .step .t{
+    font-size:14px;
+    color:var(--gray-300);
+  }
+
+  .brand-panel svg.garment{
+    position:absolute;
+    right:-60px;bottom:-60px;
+    width:340px;height:340px;
+    stroke:rgba(255,255,255,0.08);
+    fill:none;
+    stroke-width:1.2;
+  }
+
+  /* ---------- RIGHT: FORM PANEL ---------- */
+  .form-panel{
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    padding:56px;
+    overflow-y:auto;
+  }
+  .form-wrap{
+    width:100%;
+    max-width:380px;
+    margin:0 auto;
+  }
+  .form-wrap .eyebrow{
+    font-family:'Space Mono',monospace;
+    font-size:12px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--gray-600);
+    display:flex;align-items:center;gap:10px;
+    margin-bottom:16px;
+  }
+  .form-wrap .eyebrow::before{content:"";width:26px;height:1px;background:var(--black);display:inline-block;}
+  .form-wrap h2{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:clamp(26px,2.8vw,32px);
+    letter-spacing:-0.01em;
+    margin-bottom:8px;
+  }
+  .form-wrap .sub{
+    font-size:14px;
+    color:var(--gray-600);
+    margin-bottom:32px;
+  }
+  .form-wrap .sub a{
+    color:var(--black);
+    border-bottom:1px solid var(--black);
+    padding-bottom:1px;
+  }
+
+  .field-row{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+  }
+
+  .field{
+    margin-bottom:18px;
+  }
+  .field label{
+    display:block;
+    font-family:'Space Mono',monospace;
+    font-size:11px;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--gray-600);
+    margin-bottom:10px;
+  }
+  .field input{
+    width:100%;
+    border:1px solid var(--black);
+    padding:14px 16px;
+    font-size:14px;
+    outline:none;
+    background:var(--white);
+    transition:background .15s ease;
+  }
+  .field input::placeholder{color:var(--gray-300);}
+  .field input:focus{background:var(--paper);}
+
+  .hint{
+    font-family:'Space Mono',monospace;
+    font-size:10px;
+    letter-spacing:0.04em;
+    color:var(--gray-600);
+    margin-top:8px;
+  }
+
+  .terms{
+    display:flex;
+    align-items:flex-start;
+    gap:10px;
+    margin-bottom:28px;
+  }
+  .terms input[type="checkbox"]{
+    width:15px;height:15px;
+    flex-shrink:0;
+    margin-top:2px;
+    border:1px solid var(--black);
+    appearance:none;
+    -webkit-appearance:none;
+    background:var(--white);
+    cursor:pointer;
+    position:relative;
+  }
+  .terms input[type="checkbox"]:checked{background:var(--black);}
+  .terms input[type="checkbox"]:checked::after{
+    content:"";
+    position:absolute;left:4px;top:1px;
+    width:4px;height:8px;
+    border:solid var(--white);
+    border-width:0 1.5px 1.5px 0;
+    transform:rotate(45deg);
+  }
+  .terms label{
+    font-size:13px;
+    color:var(--gray-600);
+    line-height:1.5;
+  }
+  .terms label a{
+    color:var(--black);
+    border-bottom:1px solid var(--black);
+    padding-bottom:1px;
+  }
+
+  .submit-btn{
+    width:100%;
+    padding:16px;
+    background:var(--black);
+    color:var(--white);
+    font-size:13px;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    transition:background .2s ease;
+  }
+  .submit-btn:hover{background:#2a2a28;}
+
+  .divider{
+    display:flex;
+    align-items:center;
+    gap:16px;
+    margin:32px 0;
+    color:var(--gray-600);
+    font-family:'Space Mono',monospace;
+    font-size:11px;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+  }
+  .divider::before,.divider::after{
+    content:"";
+    flex:1;
+    height:1px;
+    background:var(--gray-300);
+  }
+
+  .alt-actions{
+    display:flex;
+    gap:12px;
+  }
+  .alt-btn{
+    flex:1;
+    padding:13px;
+    border:1px solid var(--gray-300);
+    font-size:13px;
+    color:var(--black);
+    display:flex;align-items:center;justify-content:center;gap:8px;
+    transition:border-color .2s ease;
+  }
+  .alt-btn:hover{border-color:var(--black);}
+  .alt-btn svg{width:15px;height:15px;}
+
+  .signin-line{
+    margin-top:34px;
+    font-size:13px;
+    color:var(--gray-600);
+    text-align:center;
+  }
+  .signin-line a{
+    color:var(--black);
+    border-bottom:1px solid var(--black);
+    padding-bottom:1px;
+  }
+
+  @media (max-width:900px){
+    .screen{grid-template-columns:1fr;}
+    .brand-panel{display:none;}
+    .form-panel{padding:40px 24px;}
+  }
+  @media (max-width:420px){
+    .field-row{grid-template-columns:1fr;}
+  }
+
+  :focus-visible{outline:2px solid var(--black);outline-offset:3px;}
+</style>
+</head>
+<body>
+
+<div class="screen">
+
+  <div class="brand-panel">
+    <a href="#" class="logo">cloth<span>SET</span></a>
+
+    <div class="brand-copy">
+      <div class="eyebrow">Get started</div>
+      <h1>Scan the receipt.<br>It builds the closet.</h1>
+      <p>Stop photographing hangers. Snap what you paid, and clothSET turns it into a piece, an outfit, and a cost-per-wear you can actually track.</p>
+    </div>
+
+    <div class="steps">
+      <div class="step"><span class="n">01</span><span class="t">Create your account</span></div>
+      <div class="step"><span class="n">02</span><span class="t">Scan your first receipt</span></div>
+      <div class="step"><span class="n">03</span><span class="t">Start building outfits</span></div>
+    </div>
+
+    <svg class="garment" viewBox="0 0 200 200"><path d="M70 20 L100 8 L130 20 L130 50 L110 40 L110 190 L90 190 L90 40 L70 50 Z"/></svg>
+  </div>
+
+  <div class="form-panel">
+    <div class="form-wrap">
+      <div class="eyebrow">Sign up</div>
+      <h2>Create your account</h2>
+      <div class="sub">Already have one? <a href="#">Sign in</a></div>
+
+      <form onsubmit="return false;">
+        <div class="field-row">
+          <div class="field">
+            <label for="first-name">First name</label>
+            <input type="text" id="first-name" placeholder="Kiya" autocomplete="given-name">
+          </div>
+          <div class="field">
+            <label for="last-name">Last name</label>
+            <input type="text" id="last-name" placeholder="Valencia" autocomplete="family-name">
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="email">Email</label>
+          <input type="email" id="email" placeholder="you@email.com" autocomplete="email">
+        </div>
+
+        <div class="field">
+          <label for="password">Password</label>
+          <input type="password" id="password" placeholder="••••••••" autocomplete="new-password">
+          <div class="hint">At least 8 characters, with a number</div>
+        </div>
+
+        <div class="field">
+          <label for="confirm-password">Confirm password</label>
+          <input type="password" id="confirm-password" placeholder="••••••••" autocomplete="new-password">
+        </div>
+
+        <div class="terms">
+          <input type="checkbox" id="terms">
+          <label for="terms">I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></label>
+        </div>
+
+        <button type="submit" class="submit-btn">Create account</button>
+      </form>
+
+      <div class="divider">Or continue with</div>
+
+      <div class="alt-actions">
+        <button class="alt-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 3 C 15 6, 15 18, 12 21 M12 3 C 9 6, 9 18, 12 21 M3 12 L21 12"/></svg>
+          Google
+        </button>
+        <button class="alt-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="4" width="16" height="16"/><path d="M4 9 L20 9 M9 9 L9 20"/></svg>
+          Apple
+        </button>
+      </div>
+
+      <div class="signin-line">
+        By creating an account, you're agreeing to receive occasional emails about your closet.
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

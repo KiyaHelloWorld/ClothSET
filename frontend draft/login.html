@@ -1,178 +1,11 @@
-<template>
-</head>
-<body>
-
-	<div class="screen">
-
-		<div class="brand-panel">
-			<a href="#" class="logo">cloth<span>SET</span></a>
-
-			<div class="brand-copy">
-				<div class="eyebrow">Welcome back</div>
-				<h1>Scan the receipt.<br>It builds the closet.</h1>
-				<p>Every purchase becomes a piece. Every piece becomes an outfit. Sign in to pick up where your closet left off.</p>
-			</div>
-
-			<!-- <div class="receipt-strip">
-				<div>
-					<div class="num">41</div>
-					<div class="label">Pieces logged</div>
-				</div>
-				<div>
-					<div class="num">₱2.4k</div>
-					<div class="label">Saved vs. cost-per-wear</div>
-				</div>
-				<div>
-					<div class="num">9</div>
-					<div class="label">Outfits built</div>
-				</div>
-			</div>
-		-->
-
-			<svg class="garment" viewBox="0 0 200 200"><path d="M70 20 L100 8 L130 20 L130 50 L110 40 L110 190 L90 190 L90 40 L70 50 Z"/></svg>
-		</div>
-
-		<div class="form-panel">
-			<div class="form-wrap">
-				<div class="eyebrow">Sign in</div>
-				<h2>Access your closet</h2>
-
-				<form onsubmit="return false;">
-					<div class="field">
-						<label for="email">Email</label>
-						<input
-						type="email" 
-						class="form-control"
-						id="email" 
-						placeholder="yourname@email.com"autocomplete="email"
-						v-model="email"
-						/>
-					</div>
-
-					<div class="field">
-						<label for="password">Password</label>
-						<input 
-						type="password" 
-						id="password" 
-						placeholder="••••••••" autocomplete="current-password"
-						v-model="password"
-						/>
-					</div>
-
-					<div class="row-between">
-						<label class="remember">
-							<input type="checkbox">
-							Remember me
-						</label>
-						<a href="#" class="forgot">Forgot password</a>
-					</div>
-
-					<button type="submit" class="submit-btn">Sign in</button>
-				</form>
-
-				<div class="divider">Or continue with</div>
-
-				<div class="alt-actions">
-					<button class="alt-btn">
-						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 3 C 15 6, 15 18, 12 21 M12 3 C 9 6, 9 18, 12 21 M3 12 L21 12"/></svg>
-						Google
-					</button>
-					<button class="alt-btn">
-						<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="4" width="16" height="16"/><path d="M4 9 L20 9 M9 9 L9 20"/></svg>
-						Apple
-					</button>
-				</div>
-
-				<div class="signup-line">
-					New to clothSET? <a href="#">Create an account</a>
-				</div>
-			</div>
-		</div>
-
-	</div>
-
-</body>
-</head>
-</template>
-
-<script>
-<script setup>
-import { ref, computed, onMounted } from 'vue';
-import { useRouter } from 'vue-router';
-import { Notyf } from 'notyf';
-import axios from 'axios';
-import { useUserStore } from '@/stores/user';
-
-const notyf = new Notyf();
-const router = useRouter();
-const userStore = useUserStore();
-
-const email = ref('');
-const username = ref('');
-const password = ref('');
-
-const isActive = computed(() => {
-  return email.value !== '' && username.value !== '' && password.value !== '';
-});
-
-function authenticate() {
-  axios.post('https://https://clothset-api.onrender.com/users/login', {
-    email: email.value,
-    username: username.value,
-    password: password.value
-  })
-  .then(response => {
-    if (response.data.access !== undefined) {
-      localStorage.setItem('token', response.data.access);
-      retrieveUserDetails(response.data.access);
-      email.value = '';
-      username.value = '';
-      password.value = '';
-      notyf.success('Successful Login');
-    }
-  })
-  .catch(error => {
-    console.error(error);
-    const message = error.response?.data?.message;
-    if (message === "Incorrect email or password") {
-      notyf.error('Incorrect Credentials. Try Again');
-    } else {
-      notyf.error('User Not Found. Try Again.');
-    }
-  });
-}
-
-function retrieveUserDetails(token) {
-  axios.get('https://s89-server-api.onrender.com/users/details', {
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  })
-  .then(response => {
-    console.log(response.data);
-    userStore.setUser({
-      id: response.data.user._id,
-      email: response.data.user.email,
-      username: response.data.user.username,
-      isAdmin: response.data.user.isAdmin
-    });
-
-    router.push('/posts');
-  })
-  .catch(error => {
-    console.error("Failed to retrieve user details:", error);
-    notyf.error("Could not fetch user details.");
-  });
-}
-
-onMounted(() => {
-  if (userStore.user.id) {
-    router.push('/posts');
-  }
-});
-</script>
-</script>
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>clothSET — Sign In</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;0,9..144,900;1,9..144,500&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
   :root{
     --black:#0d0d0d;
@@ -432,3 +265,85 @@ onMounted(() => {
 
   :focus-visible{outline:2px solid var(--black);outline-offset:3px;}
 </style>
+</head>
+<body>
+
+<div class="screen">
+
+  <div class="brand-panel">
+    <a href="#" class="logo">cloth<span>SET</span></a>
+
+    <div class="brand-copy">
+      <div class="eyebrow">Welcome back</div>
+      <h1>Scan the receipt.<br>It builds the closet.</h1>
+      <p>Every purchase becomes a piece. Every piece becomes an outfit. Sign in to pick up where your closet left off.</p>
+    </div>
+
+    <div class="receipt-strip">
+      <div>
+        <div class="num">41</div>
+        <div class="label">Pieces logged</div>
+      </div>
+      <div>
+        <div class="num">₱2.4k</div>
+        <div class="label">Saved vs. cost-per-wear</div>
+      </div>
+      <div>
+        <div class="num">9</div>
+        <div class="label">Outfits built</div>
+      </div>
+    </div>
+
+    <svg class="garment" viewBox="0 0 200 200"><path d="M70 20 L100 8 L130 20 L130 50 L110 40 L110 190 L90 190 L90 40 L70 50 Z"/></svg>
+  </div>
+
+  <div class="form-panel">
+    <div class="form-wrap">
+      <div class="eyebrow">Sign in</div>
+      <h2>Access your closet</h2>
+
+      <form onsubmit="return false;">
+        <div class="field">
+          <label for="email">Email</label>
+          <input type="email" id="email" placeholder="you@email.com" autocomplete="email">
+        </div>
+
+        <div class="field">
+          <label for="password">Password</label>
+          <input type="password" id="password" placeholder="••••••••" autocomplete="current-password">
+        </div>
+
+        <div class="row-between">
+          <label class="remember">
+            <input type="checkbox">
+            Remember me
+          </label>
+          <a href="#" class="forgot">Forgot password</a>
+        </div>
+
+        <button type="submit" class="submit-btn">Sign in</button>
+      </form>
+
+      <div class="divider">Or continue with</div>
+
+      <div class="alt-actions">
+        <button class="alt-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 3 C 15 6, 15 18, 12 21 M12 3 C 9 6, 9 18, 12 21 M3 12 L21 12"/></svg>
+          Google
+        </button>
+        <button class="alt-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="4" width="16" height="16"/><path d="M4 9 L20 9 M9 9 L9 20"/></svg>
+          Apple
+        </button>
+      </div>
+
+      <div class="signup-line">
+        New to clothSET? <a href="#">Create an account</a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
